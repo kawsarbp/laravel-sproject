@@ -1,0 +1,8 @@
+=> git and github
+=> blade tamplate useing, @stack->@push(same as @yeld->@section).
+=> tamplate mastaring with component.
+=> validation.
+=> seeder, CRUD oparation.
+=> helper method (5,mot).
+=> auth (6,mot).
+=> image upload
