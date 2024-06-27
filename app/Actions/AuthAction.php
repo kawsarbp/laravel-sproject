@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthAction
 {
-    public function create($result)
+    public function create(array $result)
     {
         User::create([
             'first_name' => $result['first_name'],

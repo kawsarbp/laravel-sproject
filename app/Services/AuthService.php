@@ -14,7 +14,7 @@ class AuthService
     {
     }
 
-    public function signup($result)
+    public function signup(array $result)
     {
         try {
             $this->authAction->create($result);
