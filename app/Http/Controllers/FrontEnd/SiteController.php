@@ -3,14 +3,22 @@
 namespace App\Http\Controllers\FrontEnd;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AuthRequest;
 use App\Models\Category;
 use App\Models\User;
+use App\Services\AuthService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Exception;
 
 class SiteController extends Controller
 {
+
+    public function __construct(private AuthService $authService)
+    {
+
+    }
+
     public function home()
     {
         $categories = Category::select('id','name','slug','status')->get();
@@ -29,28 +37,10 @@ class SiteController extends Controller
         return view('auth.sign-in',compact('categories'));
     }
 
-    public function register(Request $request)
+    public function register(AuthRequest $authRequest)
     {
-        $request->validate([
-            'first_name' => 'required|string|min:4|max:20',
-            'last_name' => 'required|string|min:4|max:12',
-            'email' => 'required|email',
-            'password' => 'required|min:4|same:confirm_password',
-        ], ['email.required' => 'This Email Field is Required!']);
-
-        try {
-            User::create([
-                'first_name' => $request->first_name,
-                'last_name' => $request->last_name,
-                'email' => $request->email,
-                'password' => Hash::make($request->password)
-            ]);
-            return redirect()->back()->with(['message'=>'Registration Success','type'=>'success']);
-        }catch (Exception $exception)
-        {
-            return redirect()->back()->with(['message'=>$exception->getMessage(),'type'=>'danger']);
-        }
-
+        $result = $authRequest->validated();
+        return $this->authService->signup($result);
     }
     // login
     public function login(Request $request)
